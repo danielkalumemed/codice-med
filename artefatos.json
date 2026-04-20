@@ -1,0 +1,113 @@
+{
+  "autor": {
+    "nome": "Kalume",
+    "bio": "Estudante de Medicina · Ser Educacional",
+    "localidade": "Teresina, Piauí",
+    "github": "seu-usuario",
+    "instagram": ""
+  },
+  "ciclos": [
+    { "id": "sem-3", "nome": "3º Semestre", "ordem": 3, "periodo": "2025.2" }
+  ],
+  "materias": [
+    { "id": "tutoria", "nome": "Tutoria.med", "cor": "#c9a96e", "icone": "stethoscope" },
+    { "id": "microbiologia", "nome": "Microbiologia", "cor": "#7a9960", "icone": "microscope" },
+    { "id": "patologia", "nome": "Patologia Médica", "cor": "#c06559", "icone": "cells" },
+    { "id": "farmacologia", "nome": "Farmacologia", "cor": "#d4a54f", "icone": "pill" },
+    { "id": "cirurgica", "nome": "Técnica Cirúrgica", "cor": "#8b9dc3", "icone": "scalpel" },
+    { "id": "imunologia", "nome": "Imunologia", "cor": "#a87ab8", "icone": "shield" }
+  ],
+  "artefatos": [
+    {
+      "id": "tuberculose-quiz",
+      "titulo": "Tuberculose — Quiz Clínico Interativo",
+      "resumo": "Revisão completa sobre TB: patogenia, clínica, diagnóstico (PPD, IGRA, BAAR) e esquema RIPE. 30 questões com feedback detalhado.",
+      "ciclo": "sem-3",
+      "materia": "tutoria",
+      "tags": ["quiz", "clínica", "pulmão", "infectologia"],
+      "url": "https://exemplo.com/tuberculose.html",
+      "dataPublicacao": "2025-09-15",
+      "duracaoEstimada": 45,
+      "destaque": true
+    },
+    {
+      "id": "arboviroses-abp",
+      "titulo": "Arboviroses — ABP Clínico",
+      "resumo": "Caso clínico com diagnóstico diferencial entre Dengue, Zika e Chikungunya. Inclui player de podcast interativo e cronologia da febre.",
+      "ciclo": "sem-3",
+      "materia": "tutoria",
+      "tags": ["ABP", "caso-clínico", "arbovirose", "epidemiologia"],
+      "url": "https://exemplo.com/arboviroses.html",
+      "dataPublicacao": "2025-09-22",
+      "duracaoEstimada": 60,
+      "destaque": true
+    },
+    {
+      "id": "cancer-colo-utero",
+      "titulo": "Câncer de Colo Uterino",
+      "resumo": "Quiz sobre HPV, rastreamento com Papanicolau, classificação FIGO e condutas terapêuticas.",
+      "ciclo": "sem-3",
+      "materia": "tutoria",
+      "tags": ["quiz", "oncologia", "ginecologia"],
+      "url": "https://exemplo.com/cervical.html",
+      "dataPublicacao": "2025-10-01",
+      "duracaoEstimada": 30
+    },
+    {
+      "id": "hiperemia-congestao",
+      "titulo": "Hiperemia e Congestão",
+      "resumo": "Apresentação em 36 slides sobre distúrbios circulatórios locais. Referencial Robbins & Cotran e Guyton. Trabalho em grupo.",
+      "ciclo": "sem-3",
+      "materia": "patologia",
+      "tags": ["apresentação", "slides", "grupo", "circulação"],
+      "url": "https://exemplo.com/hiperemia.html",
+      "dataPublicacao": "2025-10-10",
+      "duracaoEstimada": 40
+    },
+    {
+      "id": "tecnica-cirurgica-mindmap",
+      "titulo": "Técnica Cirúrgica — Mind Map Aulas 1–8",
+      "resumo": "Mapa mental completo das aulas do Prof. Dr. Marcelo Mendes Ribeiro: ambiente cirúrgico, cicatrização, suturas, nós e cateterismo.",
+      "ciclo": "sem-3",
+      "materia": "cirurgica",
+      "tags": ["mind-map", "revisão", "prova"],
+      "url": "https://exemplo.com/cirurgica.html",
+      "dataPublicacao": "2025-10-18",
+      "duracaoEstimada": 90,
+      "destaque": true
+    },
+    {
+      "id": "microbiologia-lab",
+      "titulo": "Microbiologia Lab — Gram, Price e Vidrarias",
+      "resumo": "Guia interativo do laboratório: experimento de Price adaptado, coloração de Gram passo-a-passo, orientação de vidrarias e rubrica avaliativa.",
+      "ciclo": "sem-3",
+      "materia": "microbiologia",
+      "tags": ["laboratório", "prática", "coloração"],
+      "url": "https://exemplo.com/microlab.html",
+      "dataPublicacao": "2025-11-05",
+      "duracaoEstimada": 35
+    },
+    {
+      "id": "adme-farmacocinetica",
+      "titulo": "ADME & Biodisponibilidade",
+      "resumo": "Revisão completa de farmacocinética: absorção, distribuição, metabolismo, excreção, efeito de primeira passagem e interações medicamentosas.",
+      "ciclo": "sem-3",
+      "materia": "farmacologia",
+      "tags": ["prova", "farmacocinética", "ADME"],
+      "url": "https://exemplo.com/adme.html",
+      "dataPublicacao": "2025-11-12",
+      "duracaoEstimada": 50
+    },
+    {
+      "id": "sorologia-imunodiagnostico",
+      "titulo": "Sorologia & Imunodiagnóstico",
+      "resumo": "ELISA, Western blot, cinética de IgM/IgG, cálculo de sensibilidade e especificidade, limitações dos testes rápidos.",
+      "ciclo": "sem-3",
+      "materia": "imunologia",
+      "tags": ["diagnóstico", "sorologia", "ELISA"],
+      "url": "https://exemplo.com/sorologia.html",
+      "dataPublicacao": "2025-11-20",
+      "duracaoEstimada": 40
+    }
+  ]
+}

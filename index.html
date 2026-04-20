@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Códice & Memoria — Arquivo de Estudos Médicos</title>
+<meta name="description" content="Arquivo pessoal de estudos médicos: quizzes, mapas mentais e guias interativos organizados por ciclo e matéria.">
+<meta property="og:title" content="Códice & Memoria">
+<meta property="og:description" content="Arquivo pessoal de estudos médicos interativos.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0f0d0a;
+    --bg-elevated: #17140f;
+    --bg-card: #1c1813;
+    --ink: #e8e1d4;
+    --ink-dim: #a39987;
+    --ink-faint: #6b6354;
+    --accent: #c9a96e;
+    --accent-bright: #e4bf7a;
+    --accent-deep: #8b6f3d;
+    --danger: #c06559;
+    --success: #7a9960;
+    --warning: #d4a54f;
+    --border: #2a241c;
+    --border-bright: #3d342a;
+    --overlay: rgba(0, 0, 0, 0.85);
+    --noise-opacity: 0.6;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f5f0e6;
+    --bg-elevated: #ede6d6;
+    --bg-card: #f9f4e9;
+    --ink: #1a1612;
+    --ink-dim: #5a5042;
+    --ink-faint: #8a7f6d;
+    --accent: #8b6f3d;
+    --accent-bright: #a6854a;
+    --accent-deep: #5e4a27;
+    --danger: #a84a3d;
+    --success: #5a7a42;
+    --warning: #b88a2d;
+    --border: #d6ccb8;
+    --border-bright: #b5a98f;
+    --overlay: rgba(30, 25, 18, 0.75);
+    --noise-opacity: 0.25;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter Tight', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.4s, color 0.4s;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse at top left, rgba(201, 169, 110, 0.05), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(201, 169, 110, 0.04), transparent 50%);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.8 0 0 0 0 0.7 0 0 0 0 0.5 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: var(--noise-opacity);
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ===== NAVIGATION BAR ===== */
+  nav.top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.9rem 0;
+    transition: background 0.3s;
+  }
+  nav.top-nav .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-brand::before {
+    content: '§';
+    color: var(--accent);
+    font-style: normal;
+    font-size: 1.2rem;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+  }
+  .nav-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    text-decoration: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+  .nav-link:hover { color: var(--ink); background: var(--bg-elevated); }
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink-dim);
+    width: 36px;
+    height: 36px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .theme-toggle svg { width: 16px; height: 16px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 5rem 0 4rem;
+    position: relative;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .hero-text .overline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.1s forwards;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 .amp { color: var(--accent); font-weight: 400; font-style: italic; }
+  .hero h1 .underline {
+    position: relative;
+    display: inline-block;
+  }
+  .hero h1 .underline::after {
+    content: '';
+    position: absolute;
+    bottom: 0.1em;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: drawLine 0.8s 1s forwards;
+  }
+  @keyframes drawLine { to { transform: scaleX(1); } }
+
+  .hero-lede {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    font-style: italic;
+    max-width: 540px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-author {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--bg);
+  }
+  .hero-author-info .name {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .hero-author-info .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+  }
+
+  /* Hero visual - abstract medical symbol */
+  .hero-visual {
+    position: relative;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 1s 0.5s forwards;
+  }
+  .hero-visual svg {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ===== STATS BAR ===== */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 0 1rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--accent-bright);
+    line-height: 1;
+    display: block;
+  }
+  .stat-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 0.6rem;
+  }
+
+  /* ===== SECTION HEADING ===== */
+  .section {
+    padding: 3rem 0;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .section-head .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .section-head .title::before {
+    content: '§';
+    color: var(--accent);
+    font-style: normal;
+    font-size: 1.8rem;
+  }
+  .section-head .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== FEATURED ===== */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+  .featured-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 280px;
+  }
+  .featured-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+  .featured-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-bright);
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.4);
+  }
+  .featured-card:hover::before { transform: scaleX(1); }
+  .featured-card .featured-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+  .featured-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .featured-card .summary {
+    font-size: 0.92rem;
+    color: var(--ink-dim);
+    line-height: 1.55;
+    flex: 1;
+  }
+  .featured-card .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+  }
+
+  /* ===== FILTER BAR ===== */
+  .filter-bar {
+    position: sticky;
+    top: 60px;
+    z-index: 40;
+    background: color-mix(in srgb, var(--bg) 95%, transparent);
+    backdrop-filter: blur(8px);
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 260px;
+    position: relative;
+  }
+  .search-wrap svg.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--ink-faint);
+  }
+  input.search {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    padding: 0.9rem 1rem 0.9rem 2.8rem;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 0.95rem;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  input.search:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--bg-card);
+  }
+  .select-wrap {
+    position: relative;
+  }
+  select.filter-select {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    padding: 0.85rem 2.5rem 0.85rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    appearance: none;
+  }
+  .select-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--ink-faint);
+    font-size: 0.7rem;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--bg-elevated);
+    padding: 0.25rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+  .view-btn {
+    background: transparent;
+    border: none;
+    color: var(--ink-dim);
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    transition: all 0.15s;
+  }
+  .view-btn:hover { color: var(--ink); }
+  .view-btn.active { background: var(--accent); color: var(--bg); }
+  .view-btn svg { width: 14px; height: 14px; }
+
+  /* ===== TAG CLOUD ===== */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .tag-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.7rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tag-chip:hover { color: var(--ink); border-color: var(--accent); }
+  .tag-chip.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+
+  /* ===== GRID VIEW ===== */
+  .artefato-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .artefato-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1.4rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    opacity: 0;
+    animation: fadeUp 0.5s forwards;
+    text-decoration: none;
+  }
+
+  .artefato-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-bright);
+    box-shadow: 0 12px 30px -15px rgba(0,0,0,0.5);
+  }
+
+  .artefato-card .subject-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--subject-color, var(--accent));
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .artefato-card:hover .subject-bar { opacity: 1; }
+
+  .artefato-card .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .artefato-card .subject {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--subject-color, var(--accent));
+  }
+
+  .artefato-card .duration {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .artefato-card .duration svg { width: 10px; height: 10px; }
+
+  .artefato-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  .artefato-card .summary {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .artefato-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .mini-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    padding: 0.18rem 0.5rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .artefato-card .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.3rem;
+  }
+  .date-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+  }
+  .card-actions {
+    display: flex;
+    gap: 0.3rem;
+  }
+  .card-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--ink-faint);
+    padding: 0.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    transition: color 0.15s;
+  }
+  .card-icon-btn:hover { color: var(--accent); }
+  .card-icon-btn svg { width: 12px; height: 12px; }
+  .card-icon-btn.liked { color: var(--danger); }
+
+  /* ===== TIMELINE VIEW ===== */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.5s forwards;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 0.4rem;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+  .timeline-item .date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .timeline-item h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .timeline-item h4:hover { color: var(--accent-bright); }
+  .timeline-item .meta-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+  .timeline-item p {
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    line-height: 1.55;
+    max-width: 700px;
+  }
+
+  /* ===== KNOWLEDGE MAP ===== */
+  .knowledge-map {
+    width: 100%;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+  .knowledge-map svg { width: 100%; height: 100%; cursor: grab; }
+  .knowledge-map svg:active { cursor: grabbing; }
+
+  .node-circle { cursor: pointer; transition: all 0.2s; }
+  .node-circle:hover { filter: brightness(1.3); }
+  .node-label {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 500;
+    pointer-events: none;
+    fill: var(--ink);
+  }
+  .node-label-subject {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-style: italic;
+    pointer-events: none;
+  }
+  .edge { stroke: var(--border-bright); stroke-width: 1; opacity: 0.5; }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: var(--ink-dim);
+  }
+  .empty-state .serif {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ===== DETAIL PAGE ===== */
+  .detail-view {
+    display: none;
+    padding: 2rem 0 4rem;
+  }
+  .detail-view.active { display: block; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: color 0.15s;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .back-link:hover { color: var(--accent); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  .detail-header {
+    margin-bottom: 2rem;
+  }
+  .detail-subject {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--subject-color, var(--accent));
+    margin-bottom: 1rem;
+  }
+  .detail-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .detail-summary {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    line-height: 1.55;
+    color: var(--ink-dim);
+    max-width: 780px;
+    margin-bottom: 2rem;
+  }
+  .detail-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+  }
+  .detail-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .detail-meta-item .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .detail-meta-item .value { color: var(--ink); }
+
+  .detail-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 0.85rem 1.4rem;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover {
+    background: var(--accent-bright);
+    border-color: var(--accent-bright);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-dim);
+    border-color: var(--border);
+  }
+  .btn-ghost:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+  .btn svg { width: 16px; height: 16px; }
+
+  .btn.liked { color: var(--danger); border-color: var(--danger); }
+
+  .detail-frame {
+    width: 100%;
+    min-height: 700px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: white;
+  }
+
+  .detail-stats {
+    display: flex;
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 1rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+  }
+  .detail-stats span strong { color: var(--accent); }
+
+  /* ===== COMMENTS PLACEHOLDER ===== */
+  .comments-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    text-align: center;
+    color: var(--ink-dim);
+  }
+  .comments-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .comments-section p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .comments-section code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-elevated);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--bg-elevated);
+    border: 1px solid var(--accent);
+    color: var(--ink);
+    padding: 0.9rem 1.4rem;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    z-index: 300;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 3rem 0 4rem;
+    border-top: 1px solid var(--border);
+    margin-top: 4rem;
+    text-align: center;
+  }
+  footer .ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+  }
+  footer .ornament .line { height: 1px; width: 60px; background: var(--accent); opacity: 0.4; }
+  footer .ornament svg { width: 14px; height: 14px; }
+  footer p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-dim);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  footer .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.15em;
+  }
+
+  /* ===== LOADING ===== */
+  .loading {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--ink-dim);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual { height: 280px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(1), .stat-item:nth-child(2) { border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .stat-item:nth-child(3), .stat-item:nth-child(4) { padding-top: 2rem; }
+  }
+  @media (max-width: 640px) {
+    .container { padding: 0 1.2rem; }
+    .hero { padding: 3rem 0 2rem; }
+    .nav-link { display: none; }
+    .section-head { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .detail-meta { gap: 1rem; }
+  }
+
+  /* Hide scrollbar during transitions */
+  .no-scroll { overflow: hidden; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="container nav-inner">
+    <a href="#/" class="nav-brand">Códice</a>
+    <div class="nav-links">
+      <a href="#/" class="nav-link">Arquivo</a>
+      <a href="#/timeline" class="nav-link">Cronologia</a>
+      <a href="#/mapa" class="nav-link">Mapa</a>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema" id="theme-toggle">
+        <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN LIST VIEW -->
+<div id="view-list">
+  <!-- HERO -->
+  <section class="hero container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="overline">Arquivo de Estudos · Medicina</div>
+        <h1>
+          Códice <span class="amp">&amp;</span><br>
+          <span class="underline"><em>Memoria</em></span>
+        </h1>
+        <p class="hero-lede" id="hero-lede">
+          Um arquivo vivo de quizzes, mapas mentais e guias interativos construídos durante a graduação em Medicina. Organizado por ciclo, matéria e tema — para estudar, revisar e compartilhar.
+        </p>
+        <div class="hero-author">
+          <div class="hero-author-avatar" id="author-initial">K</div>
+          <div class="hero-author-info">
+            <div class="name" id="author-name">Kalume</div>
+            <div class="meta" id="author-meta">EST. MED · TERESINA/PI</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <!-- Abstract medical caduceus-inspired composition -->
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:var(--accent-bright);stop-opacity:0.9"/>
+              <stop offset="100%" style="stop-color:var(--accent-deep);stop-opacity:0.3"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Concentric circles -->
+          <circle cx="200" cy="200" r="180" fill="none" stroke="var(--border)" stroke-width="1" opacity="0.3"/>
+          <circle cx="200" cy="200" r="140" fill="none" stroke="var(--border)" stroke-width="1" opacity="0.4"/>
+          <circle cx="200" cy="200" r="100" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.5" stroke-dasharray="4 4">
+            <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="60s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="200" cy="200" r="60" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.6"/>
+
+          <!-- Cross -->
+          <g filter="url(#glow)">
+            <rect x="185" y="140" width="30" height="120" fill="url(#g1)" rx="2"/>
+            <rect x="140" y="185" width="120" height="30" fill="url(#g1)" rx="2"/>
+          </g>
+
+          <!-- Orbiting dots -->
+          <g>
+            <circle cx="200" cy="40" r="4" fill="var(--accent-bright)">
+              <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="20s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          <g>
+            <circle cx="200" cy="340" r="3" fill="var(--accent)">
+              <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="-360 200 200" dur="30s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          <g>
+            <circle cx="60" cy="200" r="2" fill="var(--accent-bright)" opacity="0.7">
+              <animateTransform attributeName="transform" type="rotate" from="90 200 200" to="450 200 200" dur="45s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+
+          <!-- Serpent/flow lines (abstract) -->
+          <path d="M 140 80 Q 200 200 140 320" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
+          <path d="M 260 80 Q 200 200 260 320" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
+
+          <!-- Center text -->
+          <text x="200" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--ink-faint)" letter-spacing="3">ARS · MEDICA · STUDIOSA</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="container">
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="num" id="stat-total">—</span>
+        <div class="label">Artefatos</div>
+      </div>
+      <div class="stat-item">
+        <span class="num" id="stat-materias">—</span>
+        <div class="label">Matérias</div>
+      </div>
+      <div class="stat-item">
+        <span class="num" id="stat-views">—</span>
+        <div class="label">Visualizações</div>
+      </div>
+      <div class="stat-item">
+        <span class="num" id="stat-horas">—</span>
+        <div class="label">Horas de Estudo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="section container" id="featured-section">
+    <div class="section-head">
+      <h2 class="title">Destaques</h2>
+      <span class="subtitle">· os mais recomendados</span>
+    </div>
+    <div class="featured-grid" id="featured-grid"></div>
+  </section>
+
+  <!-- ALL ARTEFATOS -->
+  <section class="section container">
+    <div class="section-head">
+      <h2 class="title">Arquivo Completo</h2>
+      <span class="subtitle">· explore por matéria, tag ou busca</span>
+    </div>
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="search" id="search" placeholder="Buscar por título, resumo, tag, matéria…">
+      </div>
+      <div class="select-wrap">
+        <select class="filter-select" id="filter-materia">
+          <option value="">Todas as matérias</option>
+        </select>
+      </div>
+      <div class="select-wrap">
+        <select class="filter-select" id="filter-ordem">
+          <option value="recente">Mais recente</option>
+          <option value="antigo">Mais antigo</option>
+          <option value="titulo">Título A–Z</option>
+          <option value="populares">Mais visto</option>
+          <option value="curtido">Mais curtido</option>
+        </select>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="grid" title="Grade">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </button>
+        <button class="view-btn" data-view="timeline" title="Linha do tempo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="4" x2="12" y2="20"/><circle cx="12" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="17" r="2"/></svg>
+        </button>
+        <button class="view-btn" data-view="mapa" title="Mapa de conhecimento">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6h4M13 6h4M5 8v8M19 8v8M7 18h4M13 18h4M6 7l5 4M18 7l-5 4M6 17l5-4M18 17l-5-4"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="tag-cloud" id="tag-cloud"></div>
+
+    <div id="results-container"></div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="ornament">
+        <span class="line"></span>
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="2"/><circle cx="4" cy="12" r="1.5"/><circle cx="20" cy="12" r="1.5"/></svg>
+        <span class="line"></span>
+      </div>
+      <p>Ars longa, vita brevis.</p>
+      <div class="meta" id="footer-meta">CÓDICE & MEMORIA · ARQUIVO PESSOAL</div>
+    </div>
+  </footer>
+</div>
+
+<!-- DETAIL VIEW -->
+<div id="view-detail" class="detail-view container">
+  <button class="back-link" onclick="navigate('#/')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    voltar ao arquivo
+  </button>
+  <div id="detail-content"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ STATE ============
+let DATA = null;
+let currentView = 'grid';
+let filterMateria = '';
+let filterOrdem = 'recente';
+let filterTag = '';
+let searchQuery = '';
+let likes = {};
+let views = {};
+
+// ============ ICONS ============
+const iconLib = {
+  stethoscope: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4v0a10 10 0 0 0 16 0"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg>',
+  microscope: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18h8M3 22h18M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2v4H9zM15 13V6a3 3 0 0 0-3-3v0"/></svg>',
+  cells: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5"/><circle cx="16" cy="16" r="5"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>',
+  pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>',
+  scalpel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3 3 21M3 3l6 6M11 11l4 4"/></svg>',
+  shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3Z"/></svg>',
+};
+
+// ============ LOAD DATA ============
+async function loadData() {
+  try {
+    const res = await fetch('./artefatos.json');
+    if (!res.ok) throw new Error('Fetch failed');
+    DATA = await res.json();
+  } catch (e) {
+    // Fallback for when running offline / file://
+    DATA = getFallbackData();
+  }
+
+  // Load interaction data from localStorage (scoped per visitor)
+  try {
+    likes = JSON.parse(localStorage.getItem('codice:likes') || '{}');
+    views = JSON.parse(localStorage.getItem('codice:views') || '{}');
+  } catch (e) {
+    likes = {}; views = {};
+  }
+
+  initialize();
+}
+
+function saveInteractions() {
+  try {
+    localStorage.setItem('codice:likes', JSON.stringify(likes));
+    localStorage.setItem('codice:views', JSON.stringify(views));
+  } catch (e) {}
+}
+
+function getFallbackData() {
+  return {
+    autor: { nome: "Kalume", bio: "Estudante de Medicina", localidade: "Teresina, Piauí" },
+    ciclos: [{ id: "sem-3", nome: "3º Semestre", ordem: 3, periodo: "2025.2" }],
+    materias: [
+      { id: "tutoria", nome: "Tutoria.med", cor: "#c9a96e", icone: "stethoscope" },
+      { id: "patologia", nome: "Patologia", cor: "#c06559", icone: "cells" },
+    ],
+    artefatos: [{
+      id: "exemplo", titulo: "Artefato de Exemplo",
+      resumo: "O arquivo artefatos.json não foi carregado — certifique-se que está servindo pelo GitHub Pages ou servidor local.",
+      ciclo: "sem-3", materia: "tutoria", tags: ["exemplo"],
+      url: "", dataPublicacao: "2025-01-01", duracaoEstimada: 10, destaque: true
+    }]
+  };
+}
+
+// ============ INIT ============
+function initialize() {
+  // Author info
+  if (DATA.autor) {
+    document.getElementById('author-name').textContent = DATA.autor.nome || 'Autor';
+    document.getElementById('author-initial').textContent = (DATA.autor.nome || 'A')[0];
+    const meta = [DATA.autor.bio, DATA.autor.localidade].filter(Boolean).join(' · ').toUpperCase();
+    document.getElementById('author-meta').textContent = meta;
+    document.getElementById('footer-meta').textContent = `CÓDICE & MEMORIA · ${(DATA.autor.nome || '').toUpperCase()}`;
+  }
+
+  // Populate filter dropdowns
+  const materiaSelect = document.getElementById('filter-materia');
+  DATA.materias.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = m.nome;
+    materiaSelect.appendChild(opt);
+  });
+
+  renderStats();
+  renderFeatured();
+  renderTagCloud();
+  render();
+  handleRoute();
+}
+
+// ============ STATS ============
+function renderStats() {
+  const total = DATA.artefatos.length;
+  const materiasAtivas = new Set(DATA.artefatos.map(a => a.materia)).size;
+  const horas = Math.round(DATA.artefatos.reduce((s, a) => s + (a.duracaoEstimada || 0), 0) / 60);
+  const totalViews = Object.values(views).reduce((s, v) => s + v, 0) + DATA.artefatos.length * 3; // baseline
+
+  animateNum('stat-total', total);
+  animateNum('stat-materias', materiasAtivas);
+  animateNum('stat-views', totalViews);
+  animateNum('stat-horas', horas);
+}
+
+function animateNum(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const duration = 1200;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = Math.floor(eased * target);
+    el.textContent = String(val).padStart(2, '0');
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ============ FEATURED ============
+function renderFeatured() {
+  const featured = DATA.artefatos.filter(a => a.destaque).slice(0, 3);
+  const section = document.getElementById('featured-section');
+  if (featured.length === 0) { section.style.display = 'none'; return; }
+  const grid = document.getElementById('featured-grid');
+  grid.innerHTML = featured.map(a => {
+    const materia = DATA.materias.find(m => m.id === a.materia) || {};
+    return `
+      <div class="featured-card" onclick="navigate('#/a/${a.id}')" style="--subject-color: ${materia.cor};">
+        <div class="featured-badge">★ Destaque · ${escapeHtml(materia.nome || '')}</div>
+        <h3>${escapeHtml(a.titulo)}</h3>
+        <p class="summary">${escapeHtml(a.resumo)}</p>
+        <div class="meta">
+          <span>${formatDate(a.dataPublicacao)}</span>
+          <span>${a.duracaoEstimada || '–'} min</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============ TAG CLOUD ============
+function renderTagCloud() {
+  const tagCounts = {};
+  DATA.artefatos.forEach(a => (a.tags || []).forEach(t => tagCounts[t] = (tagCounts[t] || 0) + 1));
+  const tags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 20);
+  const cloud = document.getElementById('tag-cloud');
+  cloud.innerHTML = tags.map(([tag, count]) =>
+    `<button class="tag-chip ${filterTag === tag ? 'active' : ''}" data-tag="${escapeAttr(tag)}">${escapeHtml(tag)} <span style="opacity:.5">${count}</span></button>`
+  ).join('');
+  cloud.querySelectorAll('.tag-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const t = chip.dataset.tag;
+      filterTag = filterTag === t ? '' : t;
+      renderTagCloud();
+      render();
+    });
+  });
+}
+
+// ============ MAIN RENDER ============
+function render() {
+  const container = document.getElementById('results-container');
+  const filtered = getFiltered();
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="serif">Nada encontrado</div>
+        <p>Tente ajustar a busca, matéria ou tags selecionadas.</p>
+      </div>
+    `;
+    return;
+  }
+
+  if (currentView === 'grid') renderGrid(filtered, container);
+  else if (currentView === 'timeline') renderTimeline(filtered, container);
+  else if (currentView === 'mapa') renderKnowledgeMap(filtered, container);
+}
+
+function getFiltered() {
+  let result = [...DATA.artefatos];
+
+  if (filterMateria) result = result.filter(a => a.materia === filterMateria);
+  if (filterTag) result = result.filter(a => (a.tags || []).includes(filterTag));
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    result = result.filter(a => {
+      const haystack = [
+        a.titulo, a.resumo,
+        ...(a.tags || []),
+        (DATA.materias.find(m => m.id === a.materia) || {}).nome || ''
+      ].join(' ').toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
+  // sort
+  if (filterOrdem === 'recente') result.sort((a, b) => new Date(b.dataPublicacao) - new Date(a.dataPublicacao));
+  else if (filterOrdem === 'antigo') result.sort((a, b) => new Date(a.dataPublicacao) - new Date(b.dataPublicacao));
+  else if (filterOrdem === 'titulo') result.sort((a, b) => a.titulo.localeCompare(b.titulo, 'pt-BR'));
+  else if (filterOrdem === 'populares') result.sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0));
+  else if (filterOrdem === 'curtido') result.sort((a, b) => (likes[b.id] ? 1 : 0) - (likes[a.id] ? 1 : 0));
+
+  return result;
+}
+
+// ============ GRID VIEW ============
+function renderGrid(items, container) {
+  container.innerHTML = `<div class="artefato-grid">${items.map((a, i) => renderArtefatoCard(a, i)).join('')}</div>`;
+}
+
+function renderArtefatoCard(a, index) {
+  const materia = DATA.materias.find(m => m.id === a.materia) || {};
+  const liked = !!likes[a.id];
+  const viewCount = (views[a.id] || 0) + 3; // baseline
+  return `
+    <a href="#/a/${a.id}" class="artefato-card" style="--subject-color: ${materia.cor}; animation-delay: ${Math.min(index * 40, 400)}ms;">
+      <span class="subject-bar"></span>
+      <div class="card-head">
+        <div class="subject">${escapeHtml(materia.nome || '')}</div>
+        <div class="duration">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ${a.duracaoEstimada || '–'} min
+        </div>
+      </div>
+      <h4>${escapeHtml(a.titulo)}</h4>
+      <p class="summary">${escapeHtml(a.resumo)}</p>
+      ${a.tags && a.tags.length ? `<div class="tags">${a.tags.slice(0, 4).map(t => `<span class="mini-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+      <div class="card-footer">
+        <span class="date-text">${formatDate(a.dataPublicacao)}</span>
+        <div class="card-actions" onclick="event.preventDefault(); event.stopPropagation();">
+          <button class="card-icon-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${a.id}', event)" title="Curtir">
+            <svg viewBox="0 0 24 24" fill="${liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg>
+          </button>
+          <span class="card-icon-btn" title="Visualizações">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            ${viewCount}
+          </span>
+        </div>
+      </div>
+    </a>
+  `;
+}
+
+// ============ TIMELINE VIEW ============
+function renderTimeline(items, container) {
+  const sorted = [...items].sort((a, b) => new Date(b.dataPublicacao) - new Date(a.dataPublicacao));
+  container.innerHTML = `
+    <div class="timeline">
+      ${sorted.map((a, i) => {
+        const materia = DATA.materias.find(m => m.id === a.materia) || {};
+        return `
+          <div class="timeline-item" style="animation-delay: ${Math.min(i * 60, 600)}ms;">
+            <div class="date">${formatDate(a.dataPublicacao, true)}</div>
+            <h4 onclick="navigate('#/a/${a.id}')">${escapeHtml(a.titulo)}</h4>
+            <div class="meta-line">${escapeHtml(materia.nome || '')} · ${a.duracaoEstimada || '–'} min${a.tags && a.tags.length ? ' · ' + a.tags.slice(0,3).join(' · ') : ''}</div>
+            <p>${escapeHtml(a.resumo)}</p>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+// ============ KNOWLEDGE MAP VIEW ============
+function renderKnowledgeMap(items, container) {
+  container.innerHTML = `<div class="knowledge-map" id="km-container"></div>`;
+  const mapContainer = document.getElementById('km-container');
+  const width = mapContainer.clientWidth;
+  const height = 600;
+
+  // Nodes: center "eu" + subjects + artefatos
+  const subjects = DATA.materias.filter(m => items.some(a => a.materia === m.id));
+  const center = { id: 'center', x: width / 2, y: height / 2, type: 'center', label: DATA.autor?.nome || 'Arquivo', r: 28 };
+
+  // Place subjects in circle around center
+  const subjectNodes = subjects.map((s, i) => {
+    const angle = (i / subjects.length) * Math.PI * 2 - Math.PI / 2;
+    const radius = Math.min(width, height) * 0.25;
+    return {
+      id: s.id, type: 'subject',
+      x: center.x + Math.cos(angle) * radius,
+      y: center.y + Math.sin(angle) * radius,
+      label: s.nome, color: s.cor, r: 22, angle, radius
+    };
+  });
+
+  // Place artefatos around their subject
+  const artefatoNodes = [];
+  subjects.forEach(s => {
+    const subjNode = subjectNodes.find(n => n.id === s.id);
+    const artsInSubject = items.filter(a => a.materia === s.id);
+    artsInSubject.forEach((a, i) => {
+      const angle = subjNode.angle + ((i - (artsInSubject.length - 1) / 2) * 0.35);
+      const radius = Math.min(width, height) * 0.42;
+      artefatoNodes.push({
+        id: a.id, type: 'artefato', artefato: a,
+        x: center.x + Math.cos(angle) * radius,
+        y: center.y + Math.sin(angle) * radius,
+        label: a.titulo, color: s.cor, r: 8, subjectId: s.id
+      });
+    });
+  });
+
+  // Render SVG
+  const edges = [];
+  subjectNodes.forEach(s => edges.push({ from: center, to: s }));
+  artefatoNodes.forEach(a => {
+    const subjNode = subjectNodes.find(n => n.id === a.subjectId);
+    edges.push({ from: subjNode, to: a });
+  });
+
+  const svg = `
+    <svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+      <g id="km-edges">
+        ${edges.map(e => `<line class="edge" x1="${e.from.x}" y1="${e.from.y}" x2="${e.to.x}" y2="${e.to.y}"/>`).join('')}
+      </g>
+      <g id="km-nodes">
+        <!-- center -->
+        <circle class="node-circle" cx="${center.x}" cy="${center.y}" r="${center.r}" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>
+        <text x="${center.x}" y="${center.y + 5}" text-anchor="middle" font-family="Cormorant Garamond" font-size="14" font-style="italic" font-weight="600" fill="var(--bg)">${escapeHtml(center.label)}</text>
+
+        ${subjectNodes.map(s => `
+          <g>
+            <circle class="node-circle" cx="${s.x}" cy="${s.y}" r="${s.r}" fill="${s.color}" opacity="0.85" stroke="var(--bg)" stroke-width="2"/>
+            <text x="${s.x}" y="${s.y + s.r + 16}" text-anchor="middle" class="node-label-subject" font-size="14" fill="${s.color}">${escapeHtml(s.label)}</text>
+          </g>
+        `).join('')}
+
+        ${artefatoNodes.map(a => `
+          <g class="node-artefato" style="cursor:pointer;" onclick="navigate('#/a/${a.id}')">
+            <circle class="node-circle" cx="${a.x}" cy="${a.y}" r="${a.r}" fill="${a.color}" opacity="0.9" stroke="var(--bg)" stroke-width="1.5">
+              <title>${escapeHtml(a.artefato.titulo)}</title>
+            </circle>
+            <text x="${a.x}" y="${a.y + a.r + 12}" text-anchor="middle" class="node-label" font-size="10" fill="var(--ink-dim)">${escapeHtml(truncate(a.label, 22))}</text>
+          </g>
+        `).join('')}
+      </g>
+    </svg>
+  `;
+  mapContainer.innerHTML = svg;
+}
+
+// ============ DETAIL VIEW ============
+function renderDetail(id) {
+  const a = DATA.artefatos.find(x => x.id === id);
+  const container = document.getElementById('detail-content');
+  if (!a) {
+    container.innerHTML = `<div class="empty-state"><div class="serif">Artefato não encontrado</div></div>`;
+    return;
+  }
+
+  // Increment view
+  views[a.id] = (views[a.id] || 0) + 1;
+  saveInteractions();
+
+  const materia = DATA.materias.find(m => m.id === a.materia) || {};
+  const ciclo = DATA.ciclos.find(c => c.id === a.ciclo) || {};
+  const liked = !!likes[a.id];
+
+  const hasContent = a.url && a.url.trim();
+  const shareUrl = window.location.href;
+
+  container.innerHTML = `
+    <div class="detail-header" style="--subject-color: ${materia.cor};">
+      <div class="detail-subject">${escapeHtml(materia.nome || '')} · ${escapeHtml(ciclo.nome || '')}</div>
+      <h1 class="detail-title">${escapeHtml(a.titulo)}</h1>
+      <p class="detail-summary">${escapeHtml(a.resumo)}</p>
+      <div class="detail-meta">
+        <div class="detail-meta-item">
+          <span class="label">Publicado</span>
+          <span class="value">${formatDate(a.dataPublicacao, true)}</span>
+        </div>
+        <div class="detail-meta-item">
+          <span class="label">Duração</span>
+          <span class="value">${a.duracaoEstimada || '–'} min</span>
+        </div>
+        <div class="detail-meta-item">
+          <span class="label">Visualizações</span>
+          <span class="value">${(views[a.id] || 0) + 3}</span>
+        </div>
+        ${a.tags && a.tags.length ? `
+        <div class="detail-meta-item">
+          <span class="label">Tags</span>
+          <span class="value">${a.tags.join(' · ')}</span>
+        </div>` : ''}
+      </div>
+      <div class="detail-actions">
+        ${hasContent ? `
+          <a href="${escapeAttr(a.url)}" target="_blank" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="m10 14 11-11"/></svg>
+            Abrir em nova aba
+          </a>
+        ` : ''}
+        <button class="btn btn-ghost ${liked ? 'liked' : ''}" onclick="toggleLike('${a.id}', event, true)">
+          <svg viewBox="0 0 24 24" fill="${liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg>
+          ${liked ? 'Curtido' : 'Curtir'}
+        </button>
+        <button class="btn btn-ghost" onclick="shareArtefato('${a.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          Compartilhar
+        </button>
+      </div>
+    </div>
+
+    ${hasContent ? `
+      <iframe class="detail-frame" src="${escapeAttr(a.url)}" title="${escapeAttr(a.titulo)}" loading="lazy"></iframe>
+    ` : `
+      <div class="comments-section" style="margin-top: 0;">
+        <h3>Prévia indisponível</h3>
+        <p>Este artefato ainda não tem URL vinculada. Adicione no arquivo <code>artefatos.json</code> no campo <code>url</code>.</p>
+      </div>
+    `}
+
+    <div class="comments-section">
+      <h3>Discussão</h3>
+      <p>Para ativar comentários reais, instale o <strong>Giscus</strong> (grátis, via GitHub Discussions).<br>
+      Veja o <code>README.md</code> para instruções. Os comentários aparecerão aqui automaticamente.</p>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============ INTERACTIONS ============
+function toggleLike(id, event, isDetail = false) {
+  if (event) { event.preventDefault(); event.stopPropagation(); }
+  likes[id] = !likes[id];
+  saveInteractions();
+  showToast(likes[id] ? 'Curtido' : 'Descurtido');
+  if (isDetail) renderDetail(id);
+  else render();
+}
+
+async function shareArtefato(id) {
+  const a = DATA.artefatos.find(x => x.id === id);
+  const url = window.location.href;
+  const text = `${a.titulo} — ${a.resumo}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: a.titulo, text, url });
+    } catch (e) {}
+  } else {
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast('Link copiado');
+    } catch (e) {
+      showToast('Não foi possível compartilhar');
+    }
+  }
+}
+
+// ============ ROUTING ============
+function navigate(hash) {
+  window.location.hash = hash;
+}
+
+function handleRoute() {
+  const hash = window.location.hash || '#/';
+  const listView = document.getElementById('view-list');
+  const detailView = document.getElementById('view-detail');
+
+  if (hash.startsWith('#/a/')) {
+    const id = hash.substring(4);
+    listView.style.display = 'none';
+    detailView.classList.add('active');
+    renderDetail(id);
+  } else if (hash === '#/timeline') {
+    listView.style.display = '';
+    detailView.classList.remove('active');
+    setView('timeline');
+    document.querySelector('.section:last-of-type').scrollIntoView({ behavior: 'smooth' });
+  } else if (hash === '#/mapa') {
+    listView.style.display = '';
+    detailView.classList.remove('active');
+    setView('mapa');
+    document.querySelector('.section:last-of-type').scrollIntoView({ behavior: 'smooth' });
+  } else {
+    listView.style.display = '';
+    detailView.classList.remove('active');
+  }
+}
+
+window.addEventListener('hashchange', handleRoute);
+
+// ============ VIEW TOGGLE ============
+function setView(view) {
+  currentView = view;
+  document.querySelectorAll('.view-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+  render();
+}
+
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => setView(btn.dataset.view));
+});
+
+// ============ FILTER LISTENERS ============
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  render();
+});
+
+document.getElementById('filter-materia').addEventListener('change', e => {
+  filterMateria = e.target.value;
+  render();
+});
+
+document.getElementById('filter-ordem').addEventListener('change', e => {
+  filterOrdem = e.target.value;
+  render();
+});
+
+// ============ THEME ============
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme;
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('codice:theme', next); } catch (e) {}
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const theme = document.documentElement.dataset.theme;
+  const icon = document.getElementById('theme-icon');
+  if (theme === 'dark') {
+    icon.innerHTML = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+  } else {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+
+(function initTheme() {
+  let saved = 'dark';
+  try { saved = localStorage.getItem('codice:theme') || 'dark'; } catch (e) {}
+  document.documentElement.dataset.theme = saved;
+  updateThemeIcon();
+})();
+
+// ============ UTILS ============
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function escapeAttr(s) {
+  if (s == null) return '';
+  return String(s).replace(/["<>&]/g, c => ({'"':'&quot;','<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+}
+
+function truncate(s, n) {
+  if (!s) return '';
+  return s.length > n ? s.substring(0, n - 1) + '…' : s;
+}
+
+function formatDate(iso, long = false) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString('pt-BR', long
+    ? { day: '2-digit', month: 'long', year: 'numeric' }
+    : { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+// ============ BOOT ============
+loadData();
+</script>
+
+</body>
+</html>
